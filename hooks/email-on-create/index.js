@@ -11,18 +11,19 @@ module.exports = function registerHook({ services, exceptions }) {
       payload,
     }) {
       const mailService = new MailService({ schema });
-      const subject = 'New ' + collection + ' created';
-      const link = 'https://directus.hugrecords.world/admin/collections/' + collection + '/' + item
+      const subject = 'New ' + collection + ' created: ' + payload.name;
+      const link = 'directusbase/collections/' + collection + '/' + item
 
-      if (collection === "artists" || collection === "releases") {
+      if (collection === "events") {
         try {
           await mailService.send({
             subject: subject,
-            to: "admin@hugrecords.world",
+            to: ["email"],
             template: {
-              name: "new-item",
+              name: "new-event",
               data: {
                 name: payload.name,
+                payload: payload,
                 link: link
               },
             },
